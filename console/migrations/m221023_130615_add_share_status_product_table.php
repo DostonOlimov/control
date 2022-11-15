@@ -12,7 +12,7 @@ class m221023_130615_add_share_status_product_table extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn('product','share_status',$this->integer()->defaultValue(1));
+       $this->addColumn('product','share_status',$this->integer()->defaultValue(1));
     }
 
     /**

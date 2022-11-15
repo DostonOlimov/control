@@ -56,6 +56,16 @@ $lang = Yii::$app->language;
 							</div>
 						</div>
 					</div>
+                    <div style="background-color: #FFFFFF; padding: 10px; padding-bottom: 0px; margin-bottom: 30px;">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <a class="btn btn-primary btn-block btn-top" href="<?= Url::to(['/site/index']) ?>"><?= Yii::t('app', 'Импортные продукты') ?></a>
+                            </div>
+                            <div class="col-lg-6">
+                                <a class="btn btn-primary btn-block btn-top" href="<?= Url::to(['/site/indexuz']) ?>"><?= Yii::t('app', 'Продукция производства Узбекистана') ?></a>
+                            </div>
+                        </div>
+                    </div>
 				</div>
 			</div>
 			<?php foreach ($models as $key => $model): ?>
@@ -63,7 +73,7 @@ $lang = Yii::$app->language;
 					<div class="row">
 				<?php endif ?>
 				<div class="col-lg-4">
-					<a href="<?= Url::to(['/site/view', 'productId' => $model->parent_id]) ?>" class="product-link">
+					<a href="<?= Url::to(['/site/view', 'productId' => $model->parent_id,'product'=>1]) ?>" class="product-link">
 						<div style="background-color: #FFFFFF; padding: 20px; margin-bottom: 30px;">
 							<?php if ($model->photo): ?>
 								<div class="product-img" style="background-image: url(/productPhotos/<?= $model->photo ?>);"></div>

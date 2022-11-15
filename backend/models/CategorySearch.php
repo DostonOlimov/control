@@ -7,7 +7,7 @@ use yii\data\ActiveDataProvider;
 use common\models\Category;
 
 /**
- * CategorySearch represents the model behind the search form of `common\models\Category`.
+ * RiskTypeSearch represents the model behind the search form of `common\models\RiskType`.
  */
 class CategorySearch extends Category
 {
@@ -17,8 +17,8 @@ class CategorySearch extends Category
     public function rules()
     {
         return [
-            [['id', 'status', 'created_at', 'updated_at'], 'integer'],
-            [['name_ru', 'name_cyrl', 'name_uz', 'name_en'], 'safe'],
+            [['id', 'created_at', 'updated_at','status'], 'integer'],
+            [['name_cyrl', 'name_ru'], 'safe'],
         ];
     }
 
@@ -59,29 +59,14 @@ class CategorySearch extends Category
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
+            'status' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'name_ru', $this->name_ru])
-            ->andFilterWhere(['like', 'name_cyrl', $this->name_cyrl])
-            ->andFilterWhere(['like', 'name_uz', $this->name_uz])
-            ->andFilterWhere(['like', 'name_en', $this->name_en]);
+        $query->andFilterWhere(['like', 'name_cyrl', $this->name_cyrl])
+            ->andFilterWhere(['like', 'name_ru', $this->name_ru]);
 
         return $dataProvider;
-    }
-
-    public function searchbyName($name)
-    {
-        $query = Category::find()
-        ->where(['name_cyrl' => $name])
-        ->one();
-
-             // add conditions that should always apply here
-
-
-          return $query;
-           
     }
 }

@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use common\models\Product;
+use common\models\RiskType;
 
 $this->title = $model->product;
 $this->params['breadcrumbs'][] = $this->title;
@@ -50,13 +52,53 @@ $this->params['breadcrumbs'][] = $this->title;
 						'model' => $model,
 						'attributes' => [
 							// 'id',
-							'type_of_alert:ntext',
-							'type:ntext',
+                            [
+                                'attribute' => 'type_of_alert',
+                                'value' => function($model)
+                                {
+                                    if ($model->type_of_alert && is_numeric($model->type_of_alert))
+                                    {
+                                        return Product::getAlert($model->type_of_alert);
+
+                                    }
+                                    else
+                                    {
+                                        return $model->type_of_alert;
+                                    }
+                                }
+                            ],
+                            [
+                                'attribute' => 'type',
+                                'value' => function($model)
+                                {
+                                    if ($model->type && is_numeric($model->type))
+                                    {
+                                        return Product::getType($model->type);
+
+                                    }
+                                    else
+                                    {
+                                        return $model->type;
+                                    }
+                                }
+                            ],
 							'alert_number:ntext',
 							'alert_submitted_by:ntext',
 							'country_of_origin:ntext',
 							'counterfeit:ntext',
-							'risk_type:ntext',
+                            [
+                                'attribute' => 'risk_type',
+                                'value' => function($model)
+                                {
+                                    if ($model->risk_type && is_numeric($model->risk_type))
+                                    {
+                                        return RiskType::find()->where(['id' => $model->risk_type])->one()->name_cyrl;
+                                    }
+                                    else{
+                                        return $model->risk_type;
+                                    }
+                                }
+                            ],
 							'product:ntext',
 							'name:ntext',
 							'description:ntext',
@@ -141,13 +183,50 @@ $this->params['breadcrumbs'][] = $this->title;
 						'model' => $modelRu,
 						'attributes' => [
 							// 'id',
-							'type_of_alert:ntext',
-							'type:ntext',
+                            [
+                                'attribute' => 'type_of_alert',
+                                'value' => function($model)
+                                {
+                                    if ($model->type_of_alert && is_numeric($model->type_of_alert))
+                                    {
+                                        return Product::getAlert($model->type_of_alert);
+                                    }
+                                    else
+                                    {
+                                        return $model->type_of_alert;
+                                    }
+                                }
+                            ],
+                            [
+                                'attribute' => 'type',
+                                'value' => function($model)
+                                {
+                                    if ($model->type and  is_numeric($model->type))
+                                    {
+                                        return Product::getType($model->type);
+                                    }
+                                    else{
+                                        return $model->type;
+                                    }
+                                }
+                            ],
 							'alert_number:ntext',
 							'alert_submitted_by:ntext',
 							'country_of_origin:ntext',
 							'counterfeit:ntext',
-							'risk_type:ntext',
+                            [
+                                'attribute' => 'risk_type',
+                                'value' => function($model)
+                                {
+                                    if ($model->risk_type and is_numeric($model->risk_type))
+                                    {
+                                        return RiskType::find()->where(['id' => $model->risk_type])->one()->name_ru;
+                                    }
+                                    else{
+                                        return $model->risk_type;
+                                    }
+                                }
+                            ],
 							'product:ntext',
 							'name:ntext',
 							'description:ntext',

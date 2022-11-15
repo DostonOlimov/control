@@ -49,6 +49,23 @@ use yii\Exception;
  */
 class Product extends \yii\db\ActiveRecord
 {
+    const ALERT1 = 1;
+    const ALERT2 = 2;
+    const ALERT3 = 3;
+
+    const TYPE1 = 1;
+    const TYPE2 = 2;
+    const TYPE3 = 3;
+    const TYPE4 = 4;
+    const TYPE5 = 5;
+    const TYPE6 = 6;
+    const TYPE7 = 7;
+    const TYPE8 = 8;
+    const TYPE9 = 9;
+    const TYPE10 = 10;
+    const TYPE11 = 11;
+    const TYPE12 = 12;
+
     /**
      * {@inheritdoc}
      */
@@ -72,10 +89,47 @@ class Product extends \yii\db\ActiveRecord
         return [
             [['parent_id', 'status', 'views','share_status', 'created_at', 'updated_at'], 'integer'],
             [['codetnved', 'type_of_alert', 'type', 'alert_number', 'alert_submitted_by', 'country_of_origin', 'counterfeit', 'risk_type', 'product', 'name', 'description', 'brand', 'category', 'type_number_of_model', 'batch_number_barcode', 'oecd_portal_category', 'risk', 'technical_defect', 'measures_adopted_by_notifying_country', 'products_were_found_and_measures_were_taken_also_in', 'company_recall_page', 'url_of_case', 'barcode', 'batch_number', 'company_recall_code', 'production_dates', 'packaging_description'], 'string'],
-            [['product', 'category', 'description'], 'required'],
+            [['product', 'category', 'description','type_of_alert','risk_type','type'], 'required'],
             [['lang', 'photo'], 'string', 'max' => 255],
             [['share_status',], 'default', 'value' => 0],
         ];
+    }
+    public static function getAlert($base = null)
+    {
+        $arr = [
+            self::ALERT1 => 'Jiddiy xavfli',
+            self::ALERT2 => 'Boshqa xavf darajali',
+            self::ALERT3 => 'Boshqa turdagi ogohlantirishlar',
+        ];
+
+        if ($base === null) {
+            return $arr;
+        }
+
+        return $arr[$base];
+    }
+    public static function getType($base = null)
+    {
+        $arr = [
+            self::TYPE1 => 'Oziq-ovqat',
+            self::TYPE2 => 'Yengil sanoat',
+            self::TYPE3 => 'Qurilish',
+            self::TYPE4 => 'Elektrotexnika',
+            self::TYPE5 => 'Charmsanoat',
+            self::TYPE6 => 'Neft sanoati',
+            self::TYPE7 => 'Gaz sanoati',
+            self::TYPE8 => 'Kimyo sanoati',
+            self::TYPE9 => 'Qishloq xo\'jaligi',
+            self::TYPE10 => 'Mashinasozlik',
+            self::TYPE11 => 'Metalurgiya',
+            self::TYPE12 => 'Boshqa sohalar',
+        ];
+
+        if ($base === null) {
+            return $arr;
+        }
+
+        return $arr[$base];
     }
 
     /**

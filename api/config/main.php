@@ -1,7 +1,5 @@
 <?php
-
 date_default_timezone_set('Asia/Tashkent');
-
 $params = array_merge(
 	require __DIR__ . '/../../common/config/params.php',
 	require __DIR__ . '/../../common/config/params-local.php',
@@ -10,32 +8,27 @@ $params = array_merge(
 );
 
 return [
-	'id' => 'app-frontend',
+	'id' => 'app-api',
 	'basePath' => dirname(__DIR__),
-	'bootstrap' => ['log'],
-	'modules'=>[
-		'api' => [
-            'class' => 'frontend\modules\api\Module',
-          ]
-	],
-	'controllerNamespace' => 'frontend\controllers',
+		'bootstrap' => ['log'],
+
+
+	'controllerNamespace' => 'api\controllers',
 	'name' => 'control.standart.uz',
-	'language' => 'cyrl',
+	//'language' => 'cyrl',
 	'components' => [
 		'request' => [
-			'csrfParam' => '_csrf-frontend',
-			'baseUrl' => '',
+			'csrfParam' => '_csrf-backend',
+			'baseUrl' => '/api',
 		],
+
+
 		'user' => [
 			'identityClass' => 'common\models\User',
-			'enableAutoLogin' => false,
-			// 'authTimeout' => 10,
-			'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+			'enableAutoLogin' => true,
+			'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
 		],
-		'session' => [
-			// this is the name of the session cookie used for login on the frontend
-			'name' => 'advanced-frontend',
-		],
+
 		'log' => [
 			'traceLevel' => YII_DEBUG ? 3 : 0,
 			'targets' => [
@@ -45,33 +38,17 @@ return [
 				],
 			],
 		],
-		'errorHandler' => [
-			'errorAction' => 'site/error',
-		],
-		
-		'urlManager' => [
-			'enablePrettyUrl' => true,
-			'showScriptName' => false,
-			'rules' => [
-			],
-		],
+
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'enableStrictParsing' => true,
+            'showScriptName' => false,
+            'rules' => [
+                ['class' => 'yii\rest\UrlRule', 'controller' => 'product'],
+            ],
+        ]
 		
 	],
-	// 'as beforeRequest' => [
-	// 	'class' => 'yii\filters\AccessControl',
-	// 	'rules' => [
-	// 		[
-	// 			'allow' => true,
-	// 			'actions' => ['index', 'view', 'login', 'error'],
-	// 		],
-	// 		[
-	// 			'allow' => true,
-	// 			'roles' => ['@'],
-	// 		],
-	// 	],
-	// 	'denyCallback' => function () {
-	// 		return Yii::$app->response->redirect(['site/login']);
-	// 	},
-	// ],
+
 	'params' => $params,
 ];

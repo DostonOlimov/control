@@ -3,9 +3,12 @@
 namespace backend\controllers;
 
 use Yii;
+use yii\helpers\Html;
 use common\models\Product;
 use common\models\Codetnved;
-use common\models\Model;
+use common\models\RiskType;
+use common\models\Category;
+use backend\models\GetData;
 use backend\models\CategorySearch;
 use backend\models\CountrySearch;
 use backend\models\CodetnvedSearch;
@@ -18,8 +21,9 @@ use backend\models\ImportFile;
 use backend\models\ImageUpdate;
 use PhpOffice\PhpSpreadsheet\Spreadsheet; 
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx; 
-
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use function React\Promise\all;
+use function Symfony\Component\String\s;
 
 
 class ProductController extends Controller
@@ -63,21 +67,128 @@ class ProductController extends Controller
 		]);
 	}
 	/* update images for products which id is null */
-	public function actionImage()
+	public function actionGetdata()
 	{
-		$model = new ImageUpdate();
+        $data = [];
+		$t=false;
+		$model = new GetData();
+        if ($model->load(Yii::$app->request->post()) )
+        {
+            $myArray = json_decode(json_encode($model), true);
+            $format_date_from = date('Y-m-d H:i:s',strtotime($myArray['date_from']));
+            $format_date_to = date('Y-m-d H:i:s',strtotime($myArray['date_to']));
+            $date_to = strtotime($format_date_to.'+ 1 day');
+            $date_from = strtotime($format_date_from);
 
-		$product = new ProductSearch();
+          if($myArray['lang'] == 0)
+		  {
+			$rows = Product::find()
+			->where(['between', 'created_at', $date_from, $date_to])
+			->all();
+		   }
+		   elseif($myArray['lang'] == 2)
+		   {
+			$rows = Product::find()
+			->where(['between', 'created_at', $date_from, $date_to])
+			->andWhere(['lang' => 'cyrl'])
+			->all();
+		   }
+		   else
+		   {
+			$rows = Product::find()
+			->where(['between', 'created_at', $date_from, $date_to])
+			->andWhere(['lang' => 'ru'])
+			->all();
+		   }
+			
+          if($rows)
+          {
+              $spreadsheet = new Spreadsheet();
+              $spreadsheet->getSheet(0);
+              $sheet = $spreadsheet->getActiveSheet();
+              $sheet->setCellValueByColumnAndRow(1,1,'id');
+              $sheet->setCellValueByColumnAndRow(2,1,'parent_id');
+              $sheet->setCellValueByColumnAndRow(3,1,'language');
 
-		foreach ( $product->searchCategoryId() as $item ) {
-			$category_id [] = $item->parent_id;
+              $j =4;
+              foreach($myArray as $key => $x_value) {
+                if($x_value and $key != 'lang' and  $key != 'date_from' and $key != 'date_to')
+                {
+                    $sheet->setCellValueByColumnAndRow($j,1,$key);
+                    $j=$j+1;
+                }
+              }
+              $sheet->setCellValueByColumnAndRow($j,1,'created_at');
+              $sheet->setCellValueByColumnAndRow($j+1,1,'updated_at');
 
-		}
-        $category_id_unique = array_unique($category_id);
+              $j=2;
+              foreach($rows as $key => $row)
+              {
 
-		return $this->render('image',['model'=>$model,'category_id'=>$category_id_unique]);
+                              $sheet->setCellValueByColumnAndRow(1,$j,$row['id']);
+                              $sheet->setCellValueByColumnAndRow(2,$j,$row['parent_id']);
+                              $sheet->setCellValueByColumnAndRow(3,$j,$row['lang']);
+                               $i=4;
+                              foreach($myArray as $k => $x_value)
+                              {
+                               
+                                  if($x_value and $k != 'lang' and  $k != 'date_from' and $k != 'date_to')
+                                  {
+                                      if($k == 'category')
+                                      {
+                                          $category = Category::find()
+                                              ->where(['id' => $row[$k]])
+                                              ->one();
+                                          $row['lang'] == 'cyrl'?$row[$k] = $category->name_cyrl:$row[$k] = $category->name_ru;
+                                      }
+
+                                      if($k == 'type' and is_numeric($row[$k]))
+                                      {
+                                          $type =Product::getType($row[$k]);
+                                          $row[$k] = $type;
+							
+                                      }
+									 
+
+                                      if($k == 'risk_type' and is_numeric($row[$k]))
+                                      {
+                                          $risk_type = RiskType::find()
+                                              ->where(['id' => $row[$k]])
+                                              ->one();
+                                          $row['lang'] == 'cyrl'?$row[$k] = $risk_type->name_cyrl:$row[$k] = $risk_type->name_ru;
+                                      }
+                                      $sheet->setCellValueByColumnAndRow($i,$j,$row[$k]);
+                                      $i++;
+                                  }
+
+                              }
+                  $sheet->setCellValueByColumnAndRow($i,$j,date('Y-m-d H:i:s',$row['created_at']));
+                  $sheet->setCellValueByColumnAndRow($i+1,$j,date('Y-m-d H:i:s',$row['updated_at']));
+                  $j++;
+
+              }
+		
+              $writer = new Xlsx($spreadsheet);
+
+              // Save .xlsx file to the files directory
+              $writer->save('../../uploads/products.xlsx');
+
+			 $t=true;
+
+          }
+		  else
+		  {
+			echo '<div class="alert alert-danger ">Tanlangan vaqt oralig\'ida malumotlar yo\'q</div>';
+		  }
+
+        }
+        return $this->render('getdata', [
+            'model' => $model,
+			't' =>$t,
+        ]);
 	}
- 
+
+
 	/* excel file upload by doston*/
 	public $dataArray;
 
@@ -480,6 +591,7 @@ class ProductController extends Controller
 	{
 		$model = Product::findOne(['id' => $id]);
 		$models = [];
+        $error = [];
 		
 		if ($model === null)
 		{
@@ -553,12 +665,20 @@ class ProductController extends Controller
 						$productNew->save();
 						if ($productNew->lang == 'cyrl')
 						{
-							$parentId = $productNew->id;
+                            $parentId = $productNew->id;
+                            $categoryId = $productNew->category;
+                            $typeId = $productNew->type;
+                            $alertTypeId = $productNew->type_of_alert;
+                            $riskTypeId = $productNew->risk_type;
+                            $codetnved = $productNew->codetnved;
+                            $origin_country = $productNew->country_of_origin;
+                            $alert_country = $productNew->alert_submitted_by;
 						}
 						$productsNew[] = $productNew;
 					}
 				}				
 			}
+
 
 			$image = UploadedFile::getInstance($model, 'photo');
 			if (!is_null($image))
@@ -582,21 +702,42 @@ class ProductController extends Controller
 
 			if ($valid)
 			{
-				foreach ($productsNew as $key => $productNewNew)
-				{
-					$productNewNew->photo = $model->photo;
-					$productNewNew->parent_id = $parentId;
+                foreach ($productsNew as $key => $productNewNew)
+                {
+                    $productNewNew->photo = $model->photo;
+                    $productNewNew->parent_id = $parentId;
 
-					if (!($valid = $productNewNew->validate()))
-					{
-						$transaction->rollBack();
-						break;
-					}
-					else
-					{
-						$productNewNew->save();
-					}
-				}
+
+                    if (!($valid = $productNewNew->validate()))
+                    {
+                        $transaction->rollBack();
+                        break;
+                    }
+                    elseif($productNewNew->codetnved == $codetnved && $productNewNew->type == $typeId && $productNewNew->type_of_alert == $alertTypeId &&
+                        $productNewNew->category == $categoryId  && $productNewNew->risk_type == $riskTypeId && $productNewNew->alert_submitted_by == $alert_country && $productNewNew->country_of_origin == $origin_country)
+                    {
+                        $productNewNew->save();
+                    }
+                    else
+                    {
+                        if($productNewNew->codetnved != $codetnved) $error[] = 'Kode TnVed bir xil bo\'lishi kerak</br>';
+                        if($productNewNew->type != $typeId ) $error[] = 'Mahsulot turi bir xil bo\'lishi kerak</br>';
+                        if($productNewNew->category != $categoryId ) $error[] =  'Kategoriya bir xil bo\'lishi kerak</br>';
+                        if($productNewNew->type_of_alert != $alertTypeId ) $error[] =  'Ogohlantirish turi bir xil bo\'lishi kerak</br>';
+                        if($productNewNew->risk_type != $riskTypeId) $error[] =  'Xavf turi bir xil bo\'lishi kerak</br>';
+                        if($productNewNew->alert_submitted_by != $alert_country ) $error[] =  'Ogohlantiruvchi davlat bir xil bo\'lishi kerak</br>';
+                        if($productNewNew->country_of_origin != $origin_country) $error[] =  'Taminotchi mamlakat bir xil bo\'lishi kerak</br>';
+
+                        return $this->render('_form', [
+                            'model' => $model,
+                            'models' => $productsNew,
+                            'errors' => $error,
+
+                        ]);
+                        $transaction->rollBack();
+                        break;
+                    }
+                }
 			}
 
 			if ($valid)
@@ -604,12 +745,14 @@ class ProductController extends Controller
 				$transaction->commit();
 				return $this->redirect(['view', 'id' => $parentId]);
 			}
+
 		}
 
 
 		return $this->render('_form', [
 			'model' => $model,
 			'models' => $models,
+            'errors' => $error,
 		]);
 	}
 

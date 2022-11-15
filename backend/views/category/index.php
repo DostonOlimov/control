@@ -2,17 +2,17 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
-
+use yii\helpers\Url;
+/* @var $this yii\web\View */
+/* @var $searchModel backend\models\CategorySearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
 $lang = Yii::$app->language;
 
 $this->title = Yii::t('app', 'Категории');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style type="text/css">
-	.table.table-striped.table-bordered .filters
-	{
-		display: none;
-	}
+
 	.grid-view td
 	{
 		white-space: normal;
@@ -38,13 +38,18 @@ $this->params['breadcrumbs'][] = $this->title;
 				'dataProvider' => $dataProvider,
 				'filterModel' => $searchModel,
 				'columns' => [
-					['class' => 'yii\grid\SerialColumn'],
+
+                    [
+                        'class' => 'yii\grid\SerialColumn',
+
+                    ],
 					// 'id',
 					'name_cyrl',
 					'name_ru',
 					// 'name_uz',
 					// 'name_en',
 					// 'status',
+
 					[
 						'attribute' => 'status',
 						'value' => function($model)

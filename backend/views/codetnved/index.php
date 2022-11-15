@@ -3,14 +3,15 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 
+/* @var $this yii\web\View */
+/* @var $searchModel backend\models\CodetnvedSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
 $this->title = Yii::t('app', 'Код ТН-ВЭД');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style type="text/css">
-	.table.table-striped.table-bordered .filters
-	{
-		display: none;
-	}
+
 	.grid-view td
 	{
 		white-space: normal;

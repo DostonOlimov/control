@@ -9,7 +9,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use \yii\data\Pagination;
-use common\models\LoginForm;
+use common\models\RiskType;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
@@ -17,6 +17,7 @@ use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
 use common\models\Product;
+use common\models\ProductUz;
 
 class SiteController extends Controller
 {
@@ -62,18 +63,23 @@ class SiteController extends Controller
 
 		
 		$lang = Yii::$app->language;
-		$query = Product::find()
+		$query1 = Product::find()
 			->where(['status' => 1])
 			->andFilterWhere(['category' => $categoryId])
 			->andFilterWhere(['lang' => $lang])
 			->orderBy('created_at DESC');
+        $query2 = ProductUz::find()
+            ->where(['status' => 1])
+            ->andFilterWhere(['category' => $categoryId])
+            ->andFilterWhere(['lang' => $lang])
+            ->orderBy('created_at DESC');
 
-		$pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 15]);
+		$pages = new Pagination(['totalCount' => $query1->count(), 'pageSize' => 15]);
 		
-		$models = $query->offset($pages->offset)
+		$models = $query1->offset($pages->offset)
 		->limit($pages->limit)
 		->all();
-		
+
 		return $this->render('index', [
 			'models' => $models,
 			'pages' => $pages,
@@ -81,23 +87,73 @@ class SiteController extends Controller
 		]);
 	}
 
-	public function actionView($productId)
+    public function actionIndexuz($categoryId = null)
+    {
+
+
+        $lang = Yii::$app->language;
+
+        $query = ProductUz::find()
+            ->where(['status' => 1])
+            ->andFilterWhere(['category' => $categoryId])
+            ->andFilterWhere(['lang' => $lang])
+            ->orderBy('created_at DESC');
+
+        $pages = new Pagination(['totalCount' => $query->count(), 'pageSize' => 15]);
+
+        $models = $query->offset($pages->offset)
+            ->limit($pages->limit)
+            ->all();
+
+        return $this->render('indexuz', [
+            'models' => $models,
+            'pages' => $pages,
+            'categoryId' => $categoryId,
+        ]);
+    }
+
+	public function actionView($productId,$product)
 	{
 		$lang = Yii::$app->language;
-		$model = Product::findOne(['parent_id' => $productId, 'lang' => $lang]);
+        if ($product == 1)
+        {
+            $model = Product::findOne(['parent_id' => $productId, 'lang' => $lang]);
 
-		if (!$model)
-		{
-			$model = Product::findOne(['parent_id' => $productId, 'lang' => 'cyrl']);
-		}
+            if (!$model)
+            {
+                $model = Product::findOne(['parent_id' => $productId, 'lang' => 'cyrl']);
+            }
 
-		$model->views = 1 * $model->views + 1;
-		$model->save();
+            $model->views = 1 * $model->views + 1;
+            $model->save();
+             if(is_numeric($model->type_of_alert)) $model->type_of_alert = Product::getAlert($model->type_of_alert);
+            if(is_numeric($model->type)) $model->type = Product::getType($model->type);
+            if(is_numeric($model->risk_type)) $model->risk_type = RiskType::find()->where(['id' => $model->risk_type])->one()->name_cyrl;
 
-		return $this->render('view', [
-			'model' => $model,
-			// 'categoryId' => $categoryId,
-		]);
+            return $this->render('view', [
+                'model' => $model,
+                // 'categoryId' => $categoryId,
+            ]);
+        }
+        else
+        {
+            $model = ProductUz::findOne(['parent_id' => $productId, 'lang' => $lang]);
+
+            if (!$model)
+            {
+                $model = ProductUz::findOne(['parent_id' => $productId, 'lang' => 'cyrl']);
+            }
+
+            $model->views = 1 * $model->views + 1;
+            $model->save();
+
+            return $this->render('view', [
+                'model' => $model,
+                // 'categoryId' => $categoryId,
+            ]);
+
+        }
+
 	}
 
 	public function actionAbout()

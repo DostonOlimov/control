@@ -2,18 +2,20 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use common\models\Product;
 use yii\grid\ActionColumn;
 use yii\helpers\Url;
+
+/* @var $this yii\web\View */
+/* @var $searchModel backend\models\ProductSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Товары');
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 <style type="text/css">
-	.table.table-striped.table-bordered .filters
-	{
-		display: none;
-	}
+
 	.grid-view td
 	{
 		white-space: normal;
@@ -40,14 +42,14 @@ $this->params['breadcrumbs'][] = $this->title;
 				<?= Html::a(Yii::t('app', 'Файл загружен').'&emsp;', ['import'], ['class' => 'btn btn-success']) ?>
 				</div>
 			<div class="col-sm-1">
-				<?php //     Html::a(Yii::t('app', 'Вставить изображение'), ['image'], ['class' => 'btn btn-success']) ?>
+				<?=    Html::a(Yii::t('app', 'Получить данные'), ['getdata'], ['class' => 'btn btn-success']) ?>
 				</div>
 			</div>
 			<?= GridView::widget([
 				'dataProvider' => $dataProvider,
 				'filterModel' => $searchModel,
 				'columns' => [
-					['class' => 'yii\grid\SerialColumn'],
+                    ['class' => 'yii\grid\SerialColumn'],
 					// 'id',
 					[
 						'attribute' => 'id',
@@ -73,7 +75,14 @@ $this->params['breadcrumbs'][] = $this->title;
 						'format' => 'raw'
 					],
 					// 'codetnved:ntext',
-					'type_of_alert:ntext',
+                    [
+                        'attribute' => 'Ogohlantirish turi',
+                        'value' => function ($model) {
+                            if($model->type_of_alert and is_numeric($model->type_of_alert))
+                                return Product::getAlert($model->type_of_alert);
+                            else return $model->type_of_alert;
+                        }
+                    ],
 					// 'type:ntext',
 					// 'alert_number:ntext',
 					//'alert_submitted_by:ntext',
@@ -148,18 +157,23 @@ $this->params['breadcrumbs'][] = $this->title;
 						'label' => Yii::t('app', 'Действие'),
 						'value' => function($model)
 						{
-							return Html::a(Yii::t('app', 
-							'<span class="glyphicon glyphicon-eye-open"></span>'), 
-							['view', 'id' => $model->id], 
+                            $delete_button = '';
+                            if ($model->share_status == 0)
+                            {
+                                $delete_button = Html::a(Yii::t('app',
+                                    '<span class=" glyphicon glyphicon-trash"></span>'),
+                                    ['delete', 'id' => $model->id],
+                                    ['onClick' => 'return confirm("Are you sure you want to delete this item?")','class' => 'btn btn-danger btn-xs']);
+                            }
+							return Html::a(Yii::t('app',
+							'<span class="glyphicon glyphicon-eye-open"></span>'),
+							['view', 'id' => $model->id],
 							['class' => 'btn btn-primary btn-xs']) . ' ' .
-							 Html::a(Yii::t('app', 
-							 '<span class="glyphicon glyphicon-pencil"></span>'), 
-							 ['create', 'id' => $model->id], 
-							 ['class' => 'btn btn-success btn-xs']). 
-							 Html::a(Yii::t('app', 
-							 '<span class=" glyphicon glyphicon-trash"></span>'), 
-							 ['delete', 'id' => $model->id], 
-							 ['class' => ' btn btn-danger btn-xs']);
+							 Html::a(Yii::t('app',
+							 '<span class="glyphicon glyphicon-pencil"></span>'),
+							 ['create', 'id' => $model->id],
+							 ['class' => 'btn btn-success btn-xs']).
+                                $delete_button;
 						},
 						'contentOptions' => ['style' => 'text-align: center'],
 						'format' => 'raw',

@@ -3,6 +3,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use common\models\Category;
 use common\models\Product;
+use common\models\ProductUz;
 
 $lang = Yii::$app->language;
 $category = Category::find()
@@ -49,15 +50,20 @@ $category = Category::find()
 			<?= Yii::t('app', 'Категории') ?>
 		</p>
 		<?= Html::a(Yii::t('app', 'Все'), ['/site/index'], ['class' => 'btn btn-success btn-block left-block-menu']) ?>
-		<?= Html::a(Yii::t('app', 'риск'), ['/site/index'], ['class' => 'btn btn-success btn-block left-block-menu']) ?>
-	
+
 		<?php foreach ($category as $key => $cat): ?>
 			<?php
-				$count = Product::find()
+				$count1 = Product::find()
 					->where(['status' => 1])
 					->andWhere(['category' => $cat->id])
 					->andWhere(['lang' => $lang])
 					->count();
+            $count2 = ProductUz::find()
+                ->where(['status' => 1])
+                ->andWhere(['category' => $cat->id])
+                ->andWhere(['lang' => $lang])
+                ->count();
+            $count = $count1 + $count2;
 			?>
 			<?php if ($count > 0): ?>
 				<?= Html::a($cat->{'name_'.$lang} . ' - ' . $count . 'та', ['/site/index', 'categoryId' => $cat->id], ['class' => 'btn-right btn btn-primary btn-block left-block-menu']) ?>

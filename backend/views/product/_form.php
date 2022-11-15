@@ -7,12 +7,19 @@ use kartik\file\FileInput;
 use yii\widgets\ActiveForm;
 use common\models\Country;
 use common\models\Category;
-use common\models\Codetnved;
+use common\models\Product;
+use common\models\RiskType;
 
+/* @var $this yii\web\View */
+/* @var $model common\models\Product */
+/* @var $form yii\widgets\ActiveForm */
 $this->title = Yii::t('app', 'Добавить');
 
-
-
+if($errors){
+    foreach ($errors as $error) {
+        echo '<div style="color:red;text-align:center;font-size:22px;">'.$error.'</div>';
+    }
+}
 $country = Country::find()
 	->where(['active' => 1])
 	->orderBy('name_country ASC')
@@ -59,7 +66,8 @@ $csrf_token = Yii::$app->request->csrfToken;
 			<ul class="nav nav-tabs">
 				<?php foreach ($models as $inx => $model): ?>
 					<li <?php if ($model->lang == 'cyrl'): ?>class="active"<?php endif ?>>
-                        <a data-toggle="tab" href="#<?= $model->lang ?>"><?php if ($model->lang == 'cyrl'): ?>Ўзб<?php elseif($model->lang == 'ru'): ?>Рус<?php endif ?></a></li>
+                        <a data-toggle="tab" href="#<?= $model->lang ?>"><?php if ($model->lang == 'cyrl'): ?>Ўзб
+                            <?php  elseif($model->lang == 'ru'): ?>Рус<?php endif ?></a></li>
 				<?php endforeach ?>
 			</ul>
 			
@@ -77,10 +85,10 @@ $csrf_token = Yii::$app->request->csrfToken;
 										echo Html::activeHiddenInput($model, "[{$inx}]lang");
 										echo Html::activeHiddenInput($model, "[{$inx}]parent_id");
 									?>
-									<?= $form->field($model, "[{$inx}]type_of_alert")->textInput() ?>
+                                    <?= $form->field($model, "[{$inx}]type_of_alert")->dropDownList(Product::getAlert(),['prompt'=>'Tanlash...']) ?>
 								</div>
 								<div class="col-lg-4">
-									<?= $form->field($model, "[{$inx}]type")->textInput() ?>
+                                    <?= $form->field($model, "[{$inx}]type")->dropDownList(Product::getType(),['prompt'=>'Tanlash...']) ?>
 								</div>
 								<div class="col-lg-4">
 									<?= $form->field($model, "[{$inx}]alert_number")->textInput() ?>
@@ -113,8 +121,8 @@ $csrf_token = Yii::$app->request->csrfToken;
 									<?= $form->field($model, "[{$inx}]counterfeit")->textInput() ?>
 								</div>
 								<div class="col-lg-4">
-									<?= $form->field($model, "[{$inx}]risk_type")->textInput() ?>
-								</div>
+                                    <?= $form->field($model, "[{$inx}]risk_type")->dropDownList(ArrayHelper::map(RiskType::find()->orderBy('name_cyrl', 'ASC')->asArray()->all(), 'id', 'name_cyrl'),['prompt'=>'Tanlash...']) ?>
+                                </div>
 								<div class="col-lg-4">
 									<?= $form->field($model, "[{$inx}]product")->textInput() ?>
 								</div>
