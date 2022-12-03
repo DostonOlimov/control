@@ -73,7 +73,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'contentOptions' => ['style' => 'text-align: center'],
                         'format' => 'raw'
                     ],
-                    // 'codetnved:ntext',
+                     'codetnved:ntext',
                     [
                         'attribute' => 'Ogohlantirish turi',
                         'value' => function ($model) {

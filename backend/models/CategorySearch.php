@@ -69,4 +69,17 @@ class CategorySearch extends Category
 
         return $dataProvider;
     }
+
+    public function searchbyName($kod)
+    {
+        $query = Category::find()
+        ->where(['name_cyrl' => $kod])
+        ->one();
+
+             // add conditions that should always apply here
+
+
+          return $query;
+           
+    }
 }

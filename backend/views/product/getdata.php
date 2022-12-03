@@ -21,7 +21,8 @@ use kartik\date\DatePicker;
 
 
             <?php $form = ActiveForm::begin(['options'=>['enctype'=>'multipart/form-data']]); ?>
-<h2 style = "text-align: center">Malumotlarni yuklovchi maydonlarni tanlang</h2>
+            <?= Html::a(Yii::t('app', 'Товары'), ['index'], ['class' => 'btn btn-primary']) ?>
+            <h2 style = "text-align: center">Malumotlarni yuklovchi maydonlarni tanlang</h2>
                     <div class="row">
                         <div class="col-lg-3">
                         <?php
@@ -89,7 +90,7 @@ use kartik\date\DatePicker;
         </div>
     </div>
     <div class="form-group text-center">
-    <?= Html::a(Yii::t('app', 'Товары'), ['index'], ['class' => 'btn btn-primary']) ?>
+ 
     <?php if($t) echo  Html::a('yuklab olish','../../uploads/products.xlsx',['class'=>'btn btn-primary']);
          else echo Html::submitButton(Yii::t('app', 'Файл загружен'), ['class' => 'btn btn-success']) ?>
     </div>

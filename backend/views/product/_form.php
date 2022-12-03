@@ -84,8 +84,14 @@ $csrf_token = Yii::$app->request->csrfToken;
 
 										echo Html::activeHiddenInput($model, "[{$inx}]lang");
 										echo Html::activeHiddenInput($model, "[{$inx}]parent_id");
-									?>
-                                    <?= $form->field($model, "[{$inx}]type_of_alert")->dropDownList(Product::getAlert(),['prompt'=>'Tanlash...']) ?>
+										if ($model->type_of_alert)
+										{
+											echo $form->field($model, "[{$inx}]type_of_alert")->dropDownList(Product::getAlert(),['value' => $model->type_of_alert, 'class' => 'form-control select2']) ;
+										}
+										else
+										{
+										echo $form->field($model, "[{$inx}]type_of_alert")->dropDownList(Product::getAlert(),['prompt'=>'Tanlash...']) ;
+										}?>
 								</div>
 								<div class="col-lg-4">
                                     <?= $form->field($model, "[{$inx}]type")->dropDownList(Product::getType(),['prompt'=>'Tanlash...']) ?>
