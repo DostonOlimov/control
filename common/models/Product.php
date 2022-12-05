@@ -179,19 +179,12 @@ class Product extends \yii\db\ActiveRecord
 public function Share(){
     Yii::$app->response->format = Response::FORMAT_JSON;
     $client = new Client();
-   if( $response = $client->createRequest()
+   $response = $client->createRequest()
          ->setMethod('POST')
-        ->setFormat(Client::FORMAT_JSON)
-        ->setUrl('http://10.190.0.118:9093/RestUzSstatus/rest/serviceControlTov/getCONTROLTOV'))
-   {
-      if( $response->setData(['product' => [$this]]))
-      {
-          if(!$response->send()){throw new \Exception('eror with send');}
-      }
-      else{throw new \Exception('error whith set Data');}
-   }
-   else{throw new \Exception("error with set url ");}
-
+         ->setFormat(Client::FORMAT_JSON)
+         ->setUrl('http://10.190.0.118:9093/RestUzSstatus/rest/serviceControlTov/getCONTROLTOV')
+         ->setData(['product' => [$this]])
+         ->send();
   return $response;
 }
     public function afterSave($insert, $changedAttributes)

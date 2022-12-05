@@ -189,6 +189,8 @@ class ProductUzController extends Controller
                             $alertTypeId = $productNew->type_of_alert;
                             $riskTypeId = $productNew->risk_type;
                             $codetnved = $productNew->codetnved;
+                            $country = $productNew->country_of_origin;
+                            $status = $productNew->status;
 
                         }
                         $productsNew[] = $productNew;
@@ -231,7 +233,8 @@ class ProductUzController extends Controller
                         break;
                     }
                     elseif($productNewNew->codetnved == $codetnved && $productNewNew->type == $typeId && $productNewNew->type_of_alert == $alertTypeId &&
-                        $productNewNew->category == $categoryId && $productNewNew->company_inn == $companyINN && $productNewNew->risk_type == $riskTypeId )
+                        $productNewNew->category == $categoryId && $productNewNew->company_inn == $companyINN 
+                        && $productNewNew->risk_type == $riskTypeId && $productNewNew->status == $status && $productNewNew->country_of_origin == $country)
                     {
                        $productNewNew->save();
                     }
@@ -243,6 +246,8 @@ class ProductUzController extends Controller
                         if($productNewNew->type_of_alert != $alertTypeId ) $error[] =  'Ogohlantirish turi bir xil bo\'lishi kerak</br>';
                         if($productNewNew->company_inn != $companyINN) $error[] =  'Kompaniya SITR bir xil bo\'lishi kerak</br>';
                         if($productNewNew->risk_type != $riskTypeId) $error[] =  'Xavf turi bir xil bo\'lishi kerak</br>';
+                        if($productNewNew->country_of_origin != $country) $error[] =  'Ishlab chiqaruvchi mamlakat bir xil bo\'lishi kerak</br>';
+                        if($productNewNew->status != $status) $error[] =  'Status bir xil bo\'lishi kerak</br>';
 
                         return $this->render('_form', [
                             'model' => $model,

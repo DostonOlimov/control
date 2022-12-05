@@ -122,10 +122,16 @@ $csrf_token = Yii::$app->request->csrfToken;
                             </div>
                             <?php if ($model->country_of_origin){?>
                          <div class="row">
-                     <div class="col-lg-6">
-                      <?= $form->field($model, "[{$inx}]country_of_origin")->dropDownList($country, ['value' => $model->country_of_origin,
+                     <div class="col-lg-4">
+                      <?= $form->field($model, "[{$inx}]country_of_origin")->dropDownList($country, [
                           'prompt' => '---', 'class' => 'form-control select2']) ?>
                      </div>
+                     <div class="col-lg-4">
+                                    <?= $form->field($model, "[{$inx}]counterfeit")->textInput() ?>
+                                </div>
+                                <div class="col-lg-4">
+                                    <?= $form->field($model, "[{$inx}]risk_type")->dropDownList(ArrayHelper::map(RiskType::find()->orderBy('name_cyrl', 'ASC')->asArray()->all(), 'id', 'name_cyrl'),['prompt'=>'Tanlash...']) ?>
+                                </div>
                           </div>
                            <?php } else { ?>
                                 <div class="row">

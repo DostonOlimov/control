@@ -606,6 +606,7 @@ class ProductController extends Controller
 			$models[1] = $modelRu;
 			
 			$photo = null;
+			
 		}
 		else
 		{
@@ -623,7 +624,6 @@ class ProductController extends Controller
 				$modelRu->lang = 'ru';
 				$models[1] = $modelRu;
 			}
-
 			$photo = $model->photo;
 		}
 
@@ -647,7 +647,7 @@ class ProductController extends Controller
 					}
 						$idNew = (isset($product['id']) and 1 * $product['id'] > 0) ? $product['id'] : null;
 					$productNew = Product::findOne(['id' => $idNew]);
-
+					
 					if (!$productNew)
 					{
 						$productNew = new Product();
@@ -673,6 +673,7 @@ class ProductController extends Controller
                             $codetnved = $productNew->codetnved;
                             $origin_country = $productNew->country_of_origin;
                             $alert_country = $productNew->alert_submitted_by;
+							$status = $productNew->status;
 						}
 						$productsNew[] = $productNew;
 					}
@@ -714,7 +715,8 @@ class ProductController extends Controller
                         break;
                     }
                     elseif($productNewNew->codetnved == $codetnved && $productNewNew->type == $typeId && $productNewNew->type_of_alert == $alertTypeId &&
-                        $productNewNew->category == $categoryId  && $productNewNew->risk_type == $riskTypeId && $productNewNew->alert_submitted_by == $alert_country && $productNewNew->country_of_origin == $origin_country)
+                        $productNewNew->category == $categoryId  && $productNewNew->risk_type == $riskTypeId && $productNewNew->status == $status &&
+						$productNewNew->alert_submitted_by == $alert_country && $productNewNew->country_of_origin == $origin_country)
                     {
                         $productNewNew->save();
                     }
@@ -727,6 +729,7 @@ class ProductController extends Controller
                         if($productNewNew->risk_type != $riskTypeId) $error[] =  'Xavf turi bir xil bo\'lishi kerak</br>';
                         if($productNewNew->alert_submitted_by != $alert_country ) $error[] =  'Ogohlantiruvchi davlat bir xil bo\'lishi kerak</br>';
                         if($productNewNew->country_of_origin != $origin_country) $error[] =  'Taminotchi mamlakat bir xil bo\'lishi kerak</br>';
+						if($productNewNew->status != $status) $error[] =  'Status bir xil bo\'lishi kerak</br>';
 
                         return $this->render('_form', [
                             'model' => $model,

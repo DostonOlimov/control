@@ -84,9 +84,9 @@ $csrf_token = Yii::$app->request->csrfToken;
 
 										echo Html::activeHiddenInput($model, "[{$inx}]lang");
 										echo Html::activeHiddenInput($model, "[{$inx}]parent_id");
-										if ($model->type_of_alert)
+										if (!is_numeric($model->type_of_alert))
 										{
-											echo $form->field($model, "[{$inx}]type_of_alert")->dropDownList(Product::getAlert(),['value' => $model->type_of_alert, 'class' => 'form-control select2']) ;
+											echo $form->field($model, "[{$inx}]type_of_alert")->textInput(['value' => $model->type_of_alert, ]) ;
 										}
 										else
 										{
@@ -94,8 +94,15 @@ $csrf_token = Yii::$app->request->csrfToken;
 										}?>
 								</div>
 								<div class="col-lg-4">
-                                    <?= $form->field($model, "[{$inx}]type")->dropDownList(Product::getType(),['prompt'=>'Tanlash...']) ?>
-								</div>
+								<?php if (!is_numeric($model->type))
+										{
+											echo $form->field($model, "[{$inx}]type")->textInput(['value' => $model->type]) ;
+										}
+										else
+										{
+										echo $form->field($model, "[{$inx}]type")->dropDownList(Product::getType(),['prompt'=>'Tanlash...']) ;
+										}?> 
+							</div>
 								<div class="col-lg-4">
 									<?= $form->field($model, "[{$inx}]alert_number")->textInput() ?>
 								</div>
@@ -127,8 +134,14 @@ $csrf_token = Yii::$app->request->csrfToken;
 									<?= $form->field($model, "[{$inx}]counterfeit")->textInput() ?>
 								</div>
 								<div class="col-lg-4">
-                                    <?= $form->field($model, "[{$inx}]risk_type")->dropDownList(ArrayHelper::map(RiskType::find()->orderBy('name_cyrl', 'ASC')->asArray()->all(), 'id', 'name_cyrl'),['prompt'=>'Tanlash...']) ?>
-                                </div>
+								<?php if (!is_numeric($model->risk_type))
+										{
+										echo $form->field($model, "[{$inx}]risk_type")->textInput(['value' => $model->risk_type,]) ;
+										}
+										else
+										{
+										echo $form->field($model, "[{$inx}]risk_type")->dropDownList(ArrayHelper::map(RiskType::find()->orderBy('name_cyrl', 'ASC')->asArray()->all(), 'id', 'name_cyrl'),['value' => $model->risk_type,'prompt'=>'Tanlash...']) ;
+										}?>  </div>
 								<div class="col-lg-4">
 									<?= $form->field($model, "[{$inx}]product")->textInput() ?>
 								</div>

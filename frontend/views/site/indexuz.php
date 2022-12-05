@@ -59,10 +59,10 @@ $lang = Yii::$app->language;
                     <div style="background-color: #FFFFFF; padding: 10px; padding-bottom: 0px; margin-bottom: 30px;">
                         <div class="row">
                             <div class="col-lg-6">
-                                <a class="btn btn-primary btn-block btn-top" href="<?= Url::to(['/site/index','product'=>1]) ?>"><?= Yii::t('app', 'Импортные продукты') ?></a>
+                                <a class="btn btn-primary btn-block btn-top" href="<?= Url::to(['/site/index','product'=>1]) ?>"><?= Yii::t('app', 'Дополнительная сертификация продуктов') ?></a>
                             </div>
                             <div class="col-lg-6">
-                                <a class="btn btn-primary btn-block btn-top" href="<?= Url::to(['/site/indexuz','product'=>2]) ?>"><?= Yii::t('app', 'Продукция производства Узбекистана') ?></a>
+                                <a class="btn btn-primary btn-block btn-top" href="<?= Url::to(['/site/indexuz','product'=>2]) ?>"><?= Yii::t('app', 'Продукция, подлежащая сертификации') ?></a>
                             </div>
                         </div>
                     </div>
