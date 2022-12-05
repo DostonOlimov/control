@@ -28,9 +28,8 @@ $country = Country::find()
     ->where(['active' => 1])
     ->orderBy('name_country ASC')
     ->all();
-$country = ArrayHelper::map($country, 'name_country', 'name_country');
-$country['Неизвестно'] = 'Неизвестно';
-$country['Номаълум'] = 'Номаълум';
+$country = ArrayHelper::map($country, 'id', 'name_country');
+unset($country[250]);
 
 $category = Category::find()
     ->where(['status' => 1])
@@ -79,15 +78,27 @@ $csrf_token = Yii::$app->request->csrfToken;
                     <?php foreach ($models as $inx => $model): ?>
                         <div id="<?= $model->lang ?>" class="tab-pane fade <?php if ($model->lang == 'cyrl'): ?>active in<?php endif ?>">
                             <div class="row">
-                                <div class="col-md-6 col-sm-12">
+                            <div class="col-lg-4">
+                                    <?= $form->field($model, "[{$inx}]company_name")->textInput() ?>
+                                </div>
+                                <div class="col-md-4 col-sm-12">
                                     <?= $form->field($model, "[{$inx}]company_inn")->widget(MaskedInput::className(), [
                                         'mask' => '999999999'
                                     ]) ?>
                                 </div>
-                                <div class="col-lg-6">
-                                    <?= $form->field($model, "[{$inx}]company_name")->textInput() ?>
+                              
+                                <div class="col-lg-4">
+                                    <?= $form->field($model, "[{$inx}]made_company")->textInput() ?>
                                 </div>
 
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <?= $form->field($model, "[{$inx}]name")->textInput() ?>
+                                </div>
+                                <div class="col-lg-6">
+                                    <?= $form->field($model, "[{$inx}]description")->textInput() ?>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-4">
@@ -109,48 +120,51 @@ $csrf_token = Yii::$app->request->csrfToken;
                                     <?= $form->field($model, "[{$inx}]alert_number")->textInput() ?>
                                 </div>
                             </div>
-
-                            <div class="row">
-                                <div class="col-lg-4">
+                            <?php if ($model->country_of_origin){?>
+                         <div class="row">
+                     <div class="col-lg-6">
+                      <?= $form->field($model, "[{$inx}]country_of_origin")->dropDownList($country, ['value' => $model->country_of_origin,
+                          'prompt' => '---', 'class' => 'form-control select2']) ?>
+                     </div>
+                          </div>
+                           <?php } else { ?>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <?= $form->field($model, "[{$inx}]country_of_origin")->dropDownList($country, ['prompt' => '---', 'class' => 'form-control select2']) ?>
+                                    </div>
+                                    <div class="col-lg-4">
                                     <?= $form->field($model, "[{$inx}]counterfeit")->textInput() ?>
                                 </div>
                                 <div class="col-lg-4">
                                     <?= $form->field($model, "[{$inx}]risk_type")->dropDownList(ArrayHelper::map(RiskType::find()->orderBy('name_cyrl', 'ASC')->asArray()->all(), 'id', 'name_cyrl'),['prompt'=>'Tanlash...']) ?>
                                 </div>
-                                <div class="col-lg-4">
+                                </div>
+                         <?php   }?>
+                            <div class="row">
+                            <div class="col-lg-6">
+                                    <?= $form->field($model, "[{$inx}]category")->dropDownList($category, ['prompt' => '---', 'class' => 'form-control select2']) ?>
+                                </div>
+                                <div class="col-lg-6">
                                     <?= $form->field($model, "[{$inx}]product")->textInput() ?>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <?= $form->field($model, "[{$inx}]name")->textInput() ?>
-                                </div>
-                                <div class="col-lg-6">
-                                    <?= $form->field($model, "[{$inx}]description")->textInput() ?>
-                                </div>
-                            </div>
+                        
                             <div class="row">
                                 <div class="col-lg-4">
                                     <?= $form->field($model, "[{$inx}]brand")->textInput() ?>
                                 </div>
                                 <div class="col-lg-4">
-                                    <?= $form->field($model, "[{$inx}]category")->dropDownList($category, ['prompt' => '---', 'class' => 'form-control select2']) ?>
-                                </div>
-                                <div class="col-lg-4">
                                     <?= $form->field($model, "[{$inx}]type_number_of_model")->textInput() ?>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-4">
                                     <?= $form->field($model, "[{$inx}]batch_number_barcode")->textInput() ?>
                                 </div>
-                                <div class="col-lg-6">
+                            </div>
+                            <div class="row">
+                               
+                                <div class="col-lg-4">
                                     <?= $form->field($model, "[{$inx}]products_were_found_and_measures_were_taken_also_in")->textInput() ?>
                                 </div>
-
-                            </div>
-
-                            <div class="row">
                                 <div class="col-lg-4">
                                     <?= $form->field($model, "[{$inx}]technical_defect")->textInput() ?>
                                 </div>
@@ -158,34 +172,41 @@ $csrf_token = Yii::$app->request->csrfToken;
                                 <div class="col-lg-4">
                                     <?= $form->field($model, "[{$inx}]barcode")->textInput() ?>
                                 </div>
+                            </div>
+
+                            <div class="row">
+                                
                                 <div class="col-lg-4">
                                     <?= $form->field($model, "[{$inx}]batch_number")->textInput() ?>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-4">
                                     <?= $form->field($model, "[{$inx}]company_recall_code")->textInput() ?>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-4">
                                     <?= $form->field($model, "[{$inx}]production_dates")->textInput() ?>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-4">
-                                    <?= $form->field($model, "[{$inx}]packaging_description")->textInput() ?>
-                                </div>
-                                <?php if ($model->codetnved){?>
-                                    <div class="col-lg-4">
+                            <?php if ($model->codetnved){?>
+                                    <div class="col-lg-6">
                                         <?= $form->field($model, "[{$inx}]codetnved")->dropDownList($codetnved, ['value'=>$model->codetnved, 'class' => 'form-control select2222']) ; ?>
                                         <?= 'ТН-ВЭД коди --- '.$model->codetnved;?>
                                     </div>
                                 <?php } else {?>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-6">
                                         <?= $form->field($model, "[{$inx}]codetnved")->dropDownList($codetnved, ['prompt' => '---', 'class' => 'form-control select2222']) ?>
                                     </div>
                                 <?php } ?>
-                                <div class="col-lg-4">
+                                <div class="col-lg-6">
+                                    <?= $form->field($model, "[{$inx}]packaging_description")->textInput() ?>
+                                </div>
+                            </div>
+                            <div class="row">
+                            <div class="col-lg-4">
                                     <?= $form->field($model, "[{$inx}]status")->dropDownList([1 =>  Yii::t('app', 'Активный'), 0 => Yii::t('app', 'Неактивный')]) ?>
+                                </div>
+                            <div class="col-lg-8">
+                                    <?= $form->field($model, "[{$inx}]comment")->textArea() ?>
                                 </div>
                             </div>
                             <?php if ($model->photo): ?>

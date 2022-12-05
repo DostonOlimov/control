@@ -43,10 +43,10 @@ $lang = Yii::$app->language;
 					<div style="background-color: #FFFFFF; padding: 10px; padding-bottom: 0px; margin-bottom: 30px;">
 						<div class="row">
 							<div class="col-lg-3">
-								<a class="btn btn-primary btn-block btn-top" href="<?= Url::to(['/site/index']) ?>"><?= Yii::t('app', 'Главная') ?></a>
+								<a class="btn btn-primary btn-block btn-top" href="<?= Url::to(['/site/index','product'=>1]) ?>"><?= Yii::t('app', 'Главная') ?></a>
 							</div>
 							<div class="col-lg-3">
-								<a class="btn btn-primary btn-block btn-top" href="<?= Url::to(['/site/about']) ?>"><?= Yii::t('app', 'О портале') ?></a>
+								<a class="btn btn-primary btn-block btn-top" href="<?= Url::to(['/site/about',]) ?>"><?= Yii::t('app', 'О портале') ?></a>
 							</div>
 							<div class="col-lg-3">
 								<a class="btn btn-primary btn-block btn-top" href="<?= Url::to(['/site/information']) ?>"><?= Yii::t('app', 'Полезная информация') ?></a>
@@ -59,10 +59,10 @@ $lang = Yii::$app->language;
                     <div style="background-color: #FFFFFF; padding: 10px; padding-bottom: 0px; margin-bottom: 30px;">
                         <div class="row">
                             <div class="col-lg-6">
-                                <a class="btn btn-primary btn-block btn-top" href="<?= Url::to(['/site/index']) ?>"><?= Yii::t('app', 'Импортные продукты') ?></a>
+                                <a class="btn btn-primary btn-block btn-top" href="<?= Url::to(['/site/index','product'=>1]) ?>"><?= Yii::t('app', 'Импортные продукты') ?></a>
                             </div>
                             <div class="col-lg-6">
-                                <a class="btn btn-primary btn-block btn-top" href="<?= Url::to(['/site/indexuz']) ?>"><?= Yii::t('app', 'Продукция производства Узбекистана') ?></a>
+                                <a class="btn btn-primary btn-block btn-top" href="<?= Url::to(['/site/indexuz','product'=>2]) ?>"><?= Yii::t('app', 'Продукция производства Узбекистана') ?></a>
                             </div>
                         </div>
                     </div>

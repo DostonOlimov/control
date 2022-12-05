@@ -34,14 +34,14 @@ $lang = Yii::$app->language;
 	}
 </style>
 <div class="row">
-	<div class="col-lg-9">
+	<div class="col-lg-12">
 		<div class="site-index">
 			<div class="row">
 				<div class="col-lg-12">
 					<div style="background-color: #FFFFFF; padding: 10px; padding-bottom: 0px; margin-bottom: 30px;">
 						<div class="row">
 							<div class="col-lg-3">
-								<a class="btn btn-primary btn-block btn-top" href="<?= Url::to(['/site/index']) ?>"><?= Yii::t('app', 'Главная') ?></a>
+								<a class="btn btn-primary btn-block btn-top" href="<?= Url::to(['/site/index','product'=>1]) ?>"><?= Yii::t('app', 'Главная') ?></a>
 							</div>
 							<div class="col-lg-3">
 								<a class="btn btn-primary btn-block btn-top" href="<?= Url::to(['/site/about']) ?>"><?= Yii::t('app', 'О портале') ?></a>
@@ -86,5 +86,5 @@ $lang = Yii::$app->language;
 			</div>
 		</div>
 	</div>
-	<?php include '_left_menu.php'; ?>
+	
 </div>

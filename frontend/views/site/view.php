@@ -3,6 +3,7 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use common\models\Product;
 use common\models\RiskType;
+use common\models\Country;
 
 $this->title = Yii::$app->name;
 $lang = Yii::$app->language;
@@ -69,9 +70,16 @@ $lang = Yii::$app->language;
 					<div style="background-color: #FFFFFF; padding: 20px; margin-bottom: 30px;">
 						<div style="width: 45%; float: left; margin-right: 15px; margin-bottom: 15px;">
 							<?php if ($model->photo): ?>
+								<?php if(isset($model->company_inn)): ?>
+									<a href="/productuzPhotos/<?= $model->photo ?>" target="_blank">
+									<div class="product-img" style="background-image: url(/productuzPhotos/<?= $model->photo ?>);"></div>
+								</a>
+									<?php else :?>
+									
 								<a href="/productPhotos/<?= $model->photo ?>" target="_blank">
 									<div class="product-img" style="background-image: url(/productPhotos/<?= $model->photo ?>);"></div>
 								</a>
+								<?php endif ?>
 							<?php else: ?>
 									<div class="product-img" style="background-image: url(/images/no-photo.jpg);"></div>
 							<?php endif ?>
@@ -113,15 +121,24 @@ $lang = Yii::$app->language;
 							  {if (is_numeric($model->type))  echo Product::getType($model->type);
 							else echo $model->type; } ?>
 						</div>
+						
 						<div style="margin-top: 10px;">
 							<b><?= $model->getAttributeLabel('alert_number') ?>:</b> <?= (isset($model->alert_number)) ? $model->alert_number : ''; ?>
 						</div>
+						<?php if (isset($model->alert_submitted_by)):?>
 						<div style="margin-top: 10px;">
 							<b><?= $model->getAttributeLabel('alert_submitted_by') ?>:</b> <?= (isset($model->alert_submitted_by)) ? $model->alert_submitted_by : ''; ?>
 						</div>
+						<?php endif ?>
+						<?php if (isset($model->country_of_origin)):?>
 						<div style="margin-top: 10px;">
-							<b><?= $model->getAttributeLabel('country_of_origin') ?>:</b> <?= (isset($model->country_of_origin)) ? $model->country_of_origin : ''; ?>
+							<b><?= $model->getAttributeLabel('country_of_origin') ?>:</b> <?= (is_numeric($model->country_of_origin)) ? 
+										Country::find()
+                                            ->where(['id' => $model->country_of_origin])
+                                            ->one()
+                                            ->name_country : $model->country_of_origin; ?>
 						</div>
+						<?php endif ?>
 						<div style="margin-top: 10px;">
 							<b><?= $model->getAttributeLabel('risk_type') ?>:</b> <?php if (isset($model->risk_type))
 							  {if (is_numeric($model->risk_type))  echo RiskType::find()->where(['id' =>$model->risk_type])->one()->name_cyrl;

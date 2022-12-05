@@ -49,7 +49,12 @@ $category = Category::find()
 		<p class="menu-title menu-title-border">
 			<?= Yii::t('app', 'Категории') ?>
 		</p>
-		<?= Html::a(Yii::t('app', 'Все'), ['/site/index'], ['class' => 'btn btn-success btn-block left-block-menu']) ?>
+		<?php if ($product == 1){
+			echo Html::a(Yii::t('app', 'Все'), ['/site/index'], ['class' => 'btn btn-success btn-block left-block-menu']);
+		} else 
+		{
+			echo Html::a(Yii::t('app', 'Все'), ['/site/indexuz'], ['class' => 'btn btn-success btn-block left-block-menu']);
+		} ?>
 
 		<?php foreach ($category as $key => $cat): ?>
 			<?php
@@ -65,12 +70,20 @@ $category = Category::find()
                 ->count();
             $count = $count1 + $count2;
 			?>
-			<?php if ($count > 0): ?>
-				<?= Html::a($cat->{'name_'.$lang} . ' - ' . $count . 'та', ['/site/index', 'categoryId' => $cat->id], ['class' => 'btn-right btn btn-primary btn-block left-block-menu']) ?>
+			<?php if ($product == 1): 
+				if ($count1 > 0): ?>
+				<?= Html::a($cat->{'name_'.$lang} . ' - ' . $count1 . 'та', ['/site/index', 'categoryId' => $cat->id], ['class' => 'btn-right btn btn-primary btn-block left-block-menu']) ?>
 			<?php else: ?>
 				<?= Html::a($cat->{'name_'.$lang}, ['/site/index', 'categoryId' => $cat->id], ['class' => 'btn-right btn btn-primary btn-block left-block-menu']) ?>
 			<?php endif ?>
-		<?php endforeach ?>
+			<?php else: 
+				if ($count2 > 0): ?>
+				<?= Html::a($cat->{'name_'.$lang} . ' - ' . $count2 . 'та', ['/site/indexuz', 'categoryId' => $cat->id], ['class' => 'btn-right btn btn-primary btn-block left-block-menu']) ?>
+			<?php else: ?>
+				<?= Html::a($cat->{'name_'.$lang}, ['/site/indexuz', 'categoryId' => $cat->id], ['class' => 'btn-right btn btn-primary btn-block left-block-menu']) ?>
+			<?php endif ?>
+			<?php endif ?>
+		  <?php endforeach ?>
 		<?php  ?>
 	</div>
 </div>

@@ -58,7 +58,7 @@ class SiteController extends Controller
 		];
 	}
 
-	public function actionIndex($categoryId = null)
+	public function actionIndex($categoryId = null,$product=1)
 	{
 
 		
@@ -68,11 +68,7 @@ class SiteController extends Controller
 			->andFilterWhere(['category' => $categoryId])
 			->andFilterWhere(['lang' => $lang])
 			->orderBy('created_at DESC');
-        $query2 = ProductUz::find()
-            ->where(['status' => 1])
-            ->andFilterWhere(['category' => $categoryId])
-            ->andFilterWhere(['lang' => $lang])
-            ->orderBy('created_at DESC');
+	
 
 		$pages = new Pagination(['totalCount' => $query1->count(), 'pageSize' => 15]);
 		
@@ -84,10 +80,11 @@ class SiteController extends Controller
 			'models' => $models,
 			'pages' => $pages,
 			'categoryId' => $categoryId,
+			'product' => $product
 		]);
 	}
 
-    public function actionIndexuz($categoryId = null)
+    public function actionIndexuz($categoryId = null,$product=2)
     {
 
 
@@ -109,6 +106,7 @@ class SiteController extends Controller
             'models' => $models,
             'pages' => $pages,
             'categoryId' => $categoryId,
+			'product' => $product
         ]);
     }
 
@@ -132,6 +130,7 @@ class SiteController extends Controller
 
             return $this->render('view', [
                 'model' => $model,
+				'product' => $product
                 // 'categoryId' => $categoryId,
             ]);
         }
@@ -149,6 +148,7 @@ class SiteController extends Controller
 
             return $this->render('view', [
                 'model' => $model,
+				'product' => $product
                 // 'categoryId' => $categoryId,
             ]);
 
@@ -171,7 +171,7 @@ class SiteController extends Controller
 		return $this->render('contact');	
 	}
 
-	public function actionSearch($categoryId = null)
+	public function actionSearch($categoryId = null,$product=1)
 	{
 		$lang = Yii::$app->language;
 		$q = Yii::$app->request->get('q');
@@ -201,6 +201,7 @@ class SiteController extends Controller
 			'models' => $models,
 			'pages' => $pages,
 			'categoryId' => $categoryId,
+			'product' => $product
 		]);
 	}
 

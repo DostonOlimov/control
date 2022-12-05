@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use common\models\ProductUz;
 use common\models\RiskType;
+use common\models\Country;
 
 $this->title = $model->product;
 $this->params['breadcrumbs'][] = $this->title;
@@ -54,6 +55,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             // 'id',
                             'company_inn:ntext',
                             'company_name:ntext',
+                            'made_company:ntext',
                             [
                                 'attribute' => 'type_of_alert',
                                 'value' => function($model)
@@ -72,6 +74,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                     if ($model->type)
                                     {
                                         return ProductUz::getType($model->type);
+
+                                    }
+                                }
+                            ],
+                            [
+                                'attribute' => 'country_of_origin',
+                                'value' => function($model)
+                                {
+                                    if ($model->country_of_origin)
+                                    {
+                                        return $country = Country::find()
+                                        ->where(['id' => $model->country_of_origin])
+                                        ->one()
+                                        ->name_country;
 
                                     }
                                 }
@@ -160,6 +176,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 // 'id',
                                 'company_inn:ntext',
                                 'company_name:ntext',
+                                'made_company:ntext',
                                 [
                                     'attribute' => 'type_of_alert',
                                     'value' => function($model)
@@ -179,6 +196,20 @@ $this->params['breadcrumbs'][] = $this->title;
                                         {
                                             return ProductUz::getType($model->type);
 
+                                        }
+                                    }
+                                ],
+                                [
+                                    'attribute' => 'country_of_origin',
+                                    'value' => function($model)
+                                    {
+                                        if ($model->country_of_origin)
+                                        {
+                                            return $country = Country::find()
+                                            ->where(['id' => $model->country_of_origin])
+                                            ->one()
+                                            ->name_country;
+    
                                         }
                                     }
                                 ],
