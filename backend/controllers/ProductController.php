@@ -625,8 +625,8 @@ class ProductController extends Controller
 				$models[1] = $modelRu;
 			}
 			$photo = $model->photo;
+			
 		}
-
 		if ($model->load(Yii::$app->request->post()))
 		{
 			$products = Yii::$app->request->post('Product');
@@ -662,6 +662,7 @@ class ProductController extends Controller
 					}
 					else
 					{
+						
 						$productNew->save();
 						if ($productNew->lang == 'cyrl')
 						{
@@ -718,6 +719,11 @@ class ProductController extends Controller
                         $productNewNew->category == $categoryId  && $productNewNew->risk_type == $riskTypeId && $productNewNew->status == $status &&
 						$productNewNew->alert_submitted_by == $alert_country && $productNewNew->country_of_origin == $origin_country)
                     {
+						if(!$isNewRecord && $productNew->share_status == 1 && $productNewNew->share_status == 1)
+						{
+							$productNew->share();
+							$productNewNew->share();
+						}
                         $productNewNew->save();
                     }
                     else

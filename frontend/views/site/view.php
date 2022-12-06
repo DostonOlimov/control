@@ -103,6 +103,9 @@ $lang = Yii::$app->language;
 						<div style="margin-top: 10px;">
 							<b><?= $model->getAttributeLabel('made_company') ?>:</b> <?= (isset($model->made_company)) ? $model->made_company : ''; ?>
 						</div>
+						<div style="margin-top: 10px;">
+							<b><?= $model->getAttributeLabel('made_company_inn') ?>:</b> <?= (isset($model->made_company)) ? $model->made_company : ''; ?>
+						</div>
 						<?php endif; ?>
 						<div style="margin-top: 10px;">
 							<b><?= $model->getAttributeLabel('codetnved') ?>:</b> <?= (isset($model->codetnved)) ? $model->codetnved : ''; ?>

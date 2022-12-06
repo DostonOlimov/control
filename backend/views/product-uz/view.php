@@ -56,6 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             'company_inn:ntext',
                             'company_name:ntext',
                             'made_company:ntext',
+                            'made_company_inn:ntext',
                             [
                                 'attribute' => 'type_of_alert',
                                 'value' => function($model)
@@ -177,6 +178,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'company_inn:ntext',
                                 'company_name:ntext',
                                 'made_company:ntext',
+                                'made_company_inn:ntext',
                                 [
                                     'attribute' => 'type_of_alert',
                                     'value' => function($model)

@@ -86,13 +86,24 @@ $csrf_token = Yii::$app->request->csrfToken;
                                         'mask' => '999999999'
                                     ]) ?>
                                 </div>
-                              
                                 <div class="col-lg-4">
                                     <?= $form->field($model, "[{$inx}]made_company")->textInput() ?>
-                                </div>
-
+                                </div>                            
                             </div>
                             <div class="row">
+                            <div class="col-md-4">
+                                    <?= $form->field($model, "[{$inx}]made_company_inn")->textInput(['type' => 'number']) ?>
+                                </div>
+                                <div class="col-lg-4">
+                            <?php if ($model->country_of_origin):?>
+                            <?= $form->field($model, "[{$inx}]country_of_origin")->dropDownList($country, ['prompt' => '---', 'class' => 'form-control select2']) ?>
+                             <?php  else : ?>
+                            <?= $form->field($model, "[{$inx}]country_of_origin")->dropDownList($country, ['prompt' => '---', 'class' => 'form-control select2']) ?>
+                             <?php endif ?>
+                            </div>
+                            <div class="col-lg-4">
+                                    <?= $form->field($model, "[{$inx}]type")->dropDownList(ProductUz::getType(),['prompt'=>'Tanlash...']) ?>
+                                </div>
                                 <div class="col-lg-6">
                                     <?= $form->field($model, "[{$inx}]name")->textInput() ?>
                                 </div>
@@ -113,45 +124,23 @@ $csrf_token = Yii::$app->request->csrfToken;
                                         <?= $form->field($model, "[{$inx}]type_of_alert")->dropDownList(ProductUz::getAlert(),['prompt'=>'Tanlash...']) ?>
 
                                 </div>
-                                <div class="col-lg-4">
-                                    <?= $form->field($model, "[{$inx}]type")->dropDownList(ProductUz::getType(),['prompt'=>'Tanlash...']) ?>
-                                </div>
+                          
                                 <div class="col-lg-4">
                                     <?= $form->field($model, "[{$inx}]alert_number")->textInput() ?>
                                 </div>
+                                <div class="col-lg-4">
+                                    <?= $form->field($model, "[{$inx}]risk_type")->dropDownList(ArrayHelper::map(RiskType::find()->orderBy('name_cyrl', 'ASC')->asArray()->all(), 'id', 'name_cyrl'),['prompt'=>'Tanlash...']) ?>
+                                </div>
                             </div>
-                            <?php if ($model->country_of_origin){?>
-                         <div class="row">
-                     <div class="col-lg-4">
-                      <?= $form->field($model, "[{$inx}]country_of_origin")->dropDownList($country, [
-                          'prompt' => '---', 'class' => 'form-control select2']) ?>
-                     </div>
-                     <div class="col-lg-4">
-                                    <?= $form->field($model, "[{$inx}]counterfeit")->textInput() ?>
-                                </div>
-                                <div class="col-lg-4">
-                                    <?= $form->field($model, "[{$inx}]risk_type")->dropDownList(ArrayHelper::map(RiskType::find()->orderBy('name_cyrl', 'ASC')->asArray()->all(), 'id', 'name_cyrl'),['prompt'=>'Tanlash...']) ?>
-                                </div>
-                          </div>
-                           <?php } else { ?>
-                                <div class="row">
-                                    <div class="col-lg-4">
-                                        <?= $form->field($model, "[{$inx}]country_of_origin")->dropDownList($country, ['prompt' => '---', 'class' => 'form-control select2']) ?>
-                                    </div>
-                                    <div class="col-lg-4">
-                                    <?= $form->field($model, "[{$inx}]counterfeit")->textInput() ?>
-                                </div>
-                                <div class="col-lg-4">
-                                    <?= $form->field($model, "[{$inx}]risk_type")->dropDownList(ArrayHelper::map(RiskType::find()->orderBy('name_cyrl', 'ASC')->asArray()->all(), 'id', 'name_cyrl'),['prompt'=>'Tanlash...']) ?>
-                                </div>
-                                </div>
-                         <?php   }?>
                             <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-4">
                                     <?= $form->field($model, "[{$inx}]category")->dropDownList($category, ['prompt' => '---', 'class' => 'form-control select2']) ?>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-4">
                                     <?= $form->field($model, "[{$inx}]product")->textInput() ?>
+                                </div>
+                                <div class="col-lg-4">
+                                    <?= $form->field($model, "[{$inx}]counterfeit")->textInput() ?>
                                 </div>
                             </div>
                         

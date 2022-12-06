@@ -83,7 +83,7 @@ class ProductUz extends \yii\db\ActiveRecord
         return [
             [['company_name', 'company_inn','product','description','type_of_alert','risk_type','type','category'],'required'],
             [['parent_id','country_of_origin', 'type_of_alert', 'type', 'category', 'status', 'created_at', 'company_inn','updated_at'], 'integer'],
-            [['made_company','codetnved','comment', 'alert_number', 'counterfeit', 'risk_type', 'product', 'name', 'description', 'brand', 'type_number_of_model', 'batch_number_barcode', 'technical_defect', 'products_were_found_and_measures_were_taken_also_in', 'barcode', 'batch_number', 'company_recall_code', 'production_dates', 'packaging_description', 'company_name'], 'string'],
+            [['made_company','made_company_inn','codetnved','comment', 'alert_number', 'counterfeit', 'risk_type', 'product', 'name', 'description', 'brand', 'type_number_of_model', 'batch_number_barcode', 'technical_defect', 'products_were_found_and_measures_were_taken_also_in', 'barcode', 'batch_number', 'company_recall_code', 'production_dates', 'packaging_description', 'company_name'], 'string'],
             [['lang', 'photo'], 'string', 'max' => 255],
             [['views',], 'default', 'value' => 0],
         ];
@@ -143,6 +143,7 @@ class ProductUz extends \yii\db\ActiveRecord
             'alert_number' => Yii::t('app', 'Номер оповещения'),
             'company_inn' => Yii::t('app', 'ИНН компании'),
             'company_name' => Yii::t('app', 'Название компании'),
+            'made_company_inn' => Yii::t('app', 'Производитель СТИР'),
             'comment' => Yii::t('app', 'Комментарий'),
             'made_company' => Yii::t('app','Производственная компания'),
             'country_of_origin' => Yii::t('app', 'Страна происхождения'),
