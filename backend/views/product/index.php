@@ -10,7 +10,7 @@ use yii\helpers\Url;
 /* @var $searchModel backend\models\ProductSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Товары');
+$this->title = Yii::t('app', 'Товары').Yii::t('app', '(таможня)');
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
@@ -27,6 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
 	.table > thead > tr > th
 	{
 		text-align: center;
+	}
+	.grid-view table thead 
+	{
+    background-color: rgba(250, 249, 240);
+	color:rgba(45, 100, 224) !important;
 	}
 </style>
 <div class="row">
@@ -76,12 +81,14 @@ $this->params['breadcrumbs'][] = $this->title;
 					],
 					 'codetnved:ntext',
                     [
-                        'attribute' => 'Ogohlantirish turi',
+                        'attribute' => Yii::t('app', 'Тип оповещения'),
                         'value' => function ($model) {
                             if($model->type_of_alert and is_numeric($model->type_of_alert))
                                 return Product::getAlert($model->type_of_alert);
                             else return $model->type_of_alert;
-                        }
+                        },
+						'contentOptions' => ['style' => 'text-align: center'],
+						
                     ],
 					// 'type:ntext',
 					// 'alert_number:ntext',
@@ -137,7 +144,8 @@ $this->params['breadcrumbs'][] = $this->title;
 						'value' => function($model)
 						{
 							return ($model->status == 1) ? Yii::t('app', 'Активный')  : Yii::t('app', 'Неактивный');
-						}
+						},
+						'contentOptions' => ['style' => 'color: blue'],
 					],
 					[
 						'attribute' => 'created_at',

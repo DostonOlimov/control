@@ -84,23 +84,24 @@ $csrf_token = Yii::$app->request->csrfToken;
 
 										echo Html::activeHiddenInput($model, "[{$inx}]lang");
 										echo Html::activeHiddenInput($model, "[{$inx}]parent_id");
-										if (!is_numeric($model->type_of_alert))
+										if (is_numeric($model->type_of_alert) || !$model->type_of_alert)
 										{
-											echo $form->field($model, "[{$inx}]type_of_alert")->textInput(['value' => $model->type_of_alert, ]) ;
+											echo $form->field($model, "[{$inx}]type_of_alert")->dropDownList(Product::getAlert(),['prompt'=>'Tanlash...']) ;
+											
 										}
 										else
 										{
-										echo $form->field($model, "[{$inx}]type_of_alert")->dropDownList(Product::getAlert(),['prompt'=>'Tanlash...']) ;
+											echo $form->field($model, "[{$inx}]type_of_alert")->textInput(['value' => $model->type_of_alert, ]) ;
 										}?>
 								</div>
 								<div class="col-lg-4">
-								<?php if (!is_numeric($model->type))
+								<?php if (is_numeric($model->type) || !$model->type)
 										{
-											echo $form->field($model, "[{$inx}]type")->textInput(['value' => $model->type]) ;
+											echo $form->field($model, "[{$inx}]type")->dropDownList(Product::getType(),['prompt'=>'Tanlash...']) ;
 										}
 										else
 										{
-										echo $form->field($model, "[{$inx}]type")->dropDownList(Product::getType(),['prompt'=>'Tanlash...']) ;
+											echo $form->field($model, "[{$inx}]type")->textInput(['value' => $model->type]) ;
 										}?> 
 							</div>
 								<div class="col-lg-4">
@@ -134,14 +135,14 @@ $csrf_token = Yii::$app->request->csrfToken;
 									<?= $form->field($model, "[{$inx}]counterfeit")->textInput() ?>
 								</div>
 								<div class="col-lg-4">
-								<?php if (!is_numeric($model->risk_type))
+								<?php if (is_numeric($model->risk_type) || !$model->risk_type) 
 										{
-										echo $form->field($model, "[{$inx}]risk_type")->textInput(['value' => $model->risk_type,]) ;
+											echo $form->field($model, "[{$inx}]risk_type")->dropDownList(ArrayHelper::map(RiskType::find()->orderBy('name_cyrl', 'ASC')->asArray()->all(), 'id', 'name_cyrl'),['value' => $model->risk_type,'prompt'=>'Tanlash...']) ;
 										}
 										else
 										{
-										echo $form->field($model, "[{$inx}]risk_type")->dropDownList(ArrayHelper::map(RiskType::find()->orderBy('name_cyrl', 'ASC')->asArray()->all(), 'id', 'name_cyrl'),['value' => $model->risk_type,'prompt'=>'Tanlash...']) ;
-										}?>  </div>
+											echo $form->field($model, "[{$inx}]risk_type")->textInput(['value' => $model->risk_type,]) ;
+									}?>  </div>
 								<div class="col-lg-4">
 									<?= $form->field($model, "[{$inx}]product")->textInput() ?>
 								</div>

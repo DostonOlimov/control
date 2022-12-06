@@ -39,10 +39,10 @@ $user = Yii::$app->user->identity;
 			Меню
 		</p>
 		<?= Html::a(Yii::t('app', 'Страны мира'), ['/country/index'], ['class' => 'btn btn-block left-block-menu']) ?>
-		<?= Html::a(Yii::t('app', 'Код ТН-ВЭД'), ['/codetnved/index'], ['class' => 'btn btn-block left-block-menu']) ?>
+		<?= Html::a(Yii::t('app', 'Список кодов ТН-ВЭД'), ['/codetnved/index'], ['class' => 'btn btn-block left-block-menu']) ?>
 		<?= Html::a(Yii::t('app', 'Категории'), ['/category/index'], ['class' => 'btn btn-block left-block-menu']) ?>
-		<?= Html::a(Yii::t('app', 'Товары'), ['/product/index'], ['class' => 'btn btn-block left-block-menu']) ?>
-        <?= Html::a(Yii::t('app', 'Товары').'(uz)', ['/product-uz/index'], ['class' => 'btn btn-block left-block-menu']) ?>
+		<?= Html::a(Yii::t('app', 'Товары').Yii::t('app', '(таможня)'), ['/product/index'], ['class' => 'btn btn-block left-block-menu']) ?>
+        <?= Html::a(Yii::t('app', 'Товары').Yii::t('app', '(сертификация)'), ['/product-uz/index'], ['class' => 'btn btn-block left-block-menu']) ?>
         <?= Html::a(Yii::t('app', 'Тип риска'), ['/risk-type/index'], ['class' => 'btn btn-block left-block-menu']) ?>
 		<?= Html::a(Yii::t('app', 'Пользователи'), ['/site/users'], ['class' => 'btn btn-block left-block-menu']) ?>
 

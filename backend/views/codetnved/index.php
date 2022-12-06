@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel backend\models\CodetnvedSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Код ТН-ВЭД');
+$this->title = Yii::t('app', 'Список кодов ТН-ВЭД');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <style type="text/css">
@@ -16,10 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	{
 		white-space: normal;
 	}
-	.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td
-	{
-		/*vertical-align: middle;*/
-	}
+	
 	.table > thead > tr > th
 	{
 		text-align: center;

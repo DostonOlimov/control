@@ -10,7 +10,7 @@ use yii\helpers\Url;
 /* @var $searchModel backend\models\RiskTypeSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Товары');
+$this->title = Yii::t('app', 'Товары').Yii::t('app', '(сертификация)');
 $this->params['breadcrumbs'][] = $this->title;
 
 ?>
@@ -28,6 +28,11 @@ $this->params['breadcrumbs'][] = $this->title;
     {
         text-align: center;
     }
+    .grid-view table thead 
+	{
+    background-color: rgba(250, 249, 240);
+	color:rgba(45, 100, 224) !important;
+	}
 </style>
 <div class="row">
     <?php include dirname(__DIR__) . '/country/_left_menu.php' ?>
@@ -75,7 +80,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ],
                      'codetnved:ntext',
                     [
-                        'attribute' => 'Ogohlantirish turi',
+                        'attribute' => Yii::t('app', 'Тип оповещения'),
                         'value' => function ($model) {
                          if($model->type_of_alert)
                             return ProductUz::getAlert($model->type_of_alert);
