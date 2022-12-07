@@ -719,12 +719,26 @@ class ProductController extends Controller
                         $productNewNew->category == $categoryId  && $productNewNew->risk_type == $riskTypeId && $productNewNew->status == $status &&
 						$productNewNew->alert_submitted_by == $alert_country && $productNewNew->country_of_origin == $origin_country)
                     {
+						$productNewNew->save();
 						if(!$isNewRecord && $productNew->share_status == 1 && $productNewNew->share_status == 1)
 						{
+							if ($productNew->type_of_alert && is_numeric($productNew->type_of_alert))
+							{
+						$productNew->type_of_alert =  Product::getAlert($productNew->type_of_alert);
+								$productNewNew->type_of_alert =  Product::getAlert($productNewNew->type_of_alert);
+
+							}
+							$dd = Product::findOne(['id' => 5939]);
+							
+								echo '<pre>';
+								print_r($dd);
+								
+								die();
 							$productNew->share();
 							$productNewNew->share();
+							
 						}
-                        $productNewNew->save();
+                      
                     }
                     else
                     {

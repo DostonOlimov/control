@@ -141,7 +141,7 @@ class Product extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'parent_id' => Yii::t('app', 'Parent ID'),
             'lang' => Yii::t('app', 'Lang'),
-            'codetnved' => Yii::t('app', 'Код ТН-ВЭД'),
+            'codetnved' => Yii::t('app', 'Список кодов ТН-ВЭД'),
             'type_of_alert' => Yii::t('app', 'Тип оповещения'),
             'type' => Yii::t('app', 'Тип'),
             'alert_number' => Yii::t('app', 'Номер оповещения'),

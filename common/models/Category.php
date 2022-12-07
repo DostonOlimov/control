@@ -53,8 +53,8 @@ class Category extends \yii\db\ActiveRecord
 	{
 		return [
 			'id' => Yii::t('app', 'ID'),
-			'name_ru' => Yii::t('app', 'Наименование (РУ)'),
-			'name_cyrl' => Yii::t('app', 'Наименование (CYRL)'),
+			'name_ru' => Yii::t('app', 'Наименование').'(Ру)',
+			'name_cyrl' => Yii::t('app', 'Наименование').'(Ўзб)',
 			'name_uz' => Yii::t('app', 'Наименование (UZ)'),
 			'name_en' => Yii::t('app', 'Наименование (EN)'),
 			'status' => Yii::t('app', 'Статус'),
