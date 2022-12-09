@@ -724,16 +724,21 @@ class ProductController extends Controller
 						{
 							if ($productNew->type_of_alert && is_numeric($productNew->type_of_alert))
 							{
-						$productNew->type_of_alert =  Product::getAlert($productNew->type_of_alert);
-								$productNewNew->type_of_alert =  Product::getAlert($productNewNew->type_of_alert);
-
+								$productNew->type_of_alert =  Product::getAlert($productNew->type_of_alert);
+								$productNewNew->type_of_alert =  Product::getAlert($productNewNew->type_of_alert);	
 							}
-							$dd = Product::findOne(['id' => 5939]);
-							
-								echo '<pre>';
-								print_r($dd);
-								
-								die();
+							if ($productNew->type && is_numeric($productNew->type))
+							{
+								$productNew->type =  Product::getType($productNew->type);
+								$productNewNew->type =  Product::getType($productNewNew->type);	
+							}
+							if ($productNew->risk_type && is_numeric($productNew->risk_type))
+							{
+								$risk1 = RiskType::find()->where(['id' => $productNew->risk_type])->one()->name_cyrl;
+								$risk2 = RiskType::find()->where(['id' => $productNew->risk_type])->one()->name_cyrl;	
+								$productNew->risk_type = $risk1;
+								$productNewNew->risk_type = $risk2; 
+							}								
 							$productNew->share();
 							$productNewNew->share();
 							
@@ -808,15 +813,33 @@ class ProductController extends Controller
         foreach($model as $item)
         {
             try {
-                if($item->Share()){
-                    $item->share_status = 1;
-                    $item->save();
+				if ($item->type_of_alert && is_numeric($item->type_of_alert))
+							{
+								$item->type_of_alert =  Product::getAlert($item->type_of_alert);
+							}
+							if ($item->type && is_numeric($item->type))
+							{
+								$item->type =  Product::getType($item->type);
+							}
+							if ($item->risk_type && is_numeric($item->risk_type))
+							{
+								$risk1 = RiskType::find()->where(['id' => $item->risk_type])->one()->name_cyrl;
+								$risk2 = RiskType::find()->where(['id' => $item->risk_type])->one()->name_cyrl;	
+								$item->risk_type = $risk1;
+								$item->risk_type = $risk2; 
+							}		
+                if($item->Share())
+				{
+					$item2 = Product::findOne(['id' => $item->id]);
+                    $item2->share_status = 1;
+                    $item2->save();
                     return $this->redirect(['index']);
                 }
               else{
-                  $item->share_status = 2;
-                  $item->save();
-                  return $this->redirect(['index']);
+				$item2 = Product::findOne(['id' => $item->id]);
+				$item2->share_status = 2;
+				$item2->save();
+				return $this->redirect(['index']);
               }
             }
             catch (\Exception $e)
